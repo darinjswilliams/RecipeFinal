@@ -11,14 +11,13 @@
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recipes"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:padding="8dp"
     android:text="@string/empty"
     tools:text="@string/empty"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:listData="@{storeProperty.recipes}"
     tools:listitem="@layout/recipe_view_item"
     tools:context=".MainActivity"/>
 </layout>
