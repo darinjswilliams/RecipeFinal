@@ -1,0 +1,3 @@
+id=smoke_turkey
+title=Smoke Turkey
+Wings and Legs

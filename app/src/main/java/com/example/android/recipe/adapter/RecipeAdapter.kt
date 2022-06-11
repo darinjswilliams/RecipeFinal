@@ -1,65 +1,42 @@
 package com.example.android.recipe.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.recipe.data.model.Recipe
 import com.example.android.recipe.data.model.local.RecipeStore
 import com.example.android.recipe.databinding.RecipeViewItemBinding
-import timber.log.Timber
+import com.example.android.recipe.ui.recipe.RecipeActivity
+import com.example.android.recipe.ui.recipe.RecipeActivity.Companion.KEY_ID
 
-class RecipeAdapter(private val store: ArrayList<Recipe>, private val onClickListener: OnClickListener) :
-    ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DiffCallback) {
+class RecipeAdapter(private val store: RecipeStore, private val onClickListener: OnClickListener) :
+    RecyclerView.Adapter<RecipeViewHolder>() {
 
-    class RecipeViewHolder(private var binding: RecipeViewItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(recipe: Recipe) {
-            binding.recipeProperty = recipe
-            binding.executePendingBindings()
-        }
-    }
+    private lateinit var binding: RecipeViewItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        return  RecipeViewHolder(RecipeViewItemBinding.inflate(LayoutInflater.from(parent.context)))
+
+        binding = RecipeViewItemBinding.inflate(LayoutInflater.from(parent.context),parent, false)
+        return RecipeViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-//        val recipeProperty = getItem(position)
-        val recipe = store[position]
-
-        Timber.i("current position of recipe ${position}")
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(recipe)
+        val recipe = store.recipes[position]
+        holder.itemView.setOnClickListener{
+            val context = holder.itemView.context
+            val intent = Intent(context, RecipeActivity::class.java)
+            intent.putExtra(KEY_ID, recipe.id)
+            context.startActivity(intent)
         }
         holder.bind(recipe)
     }
 
-    override fun getItemCount(): Int {
-        Timber.i("Here is the size ${store.size}")
-        return store.size
-    }
+    override fun getItemCount(): Int = store.recipes.size
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Recipe>(){
-        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-            return newItem == oldItem
-        }
-
-        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-            return newItem.id == oldItem.id
-        }
-
-    }
-
-    override fun onCurrentListChanged(
-        previousList: MutableList<Recipe>,
-        currentList: MutableList<Recipe>
-    ) {
-        super.onCurrentListChanged(previousList, currentList)
-    }
 
     class OnClickListener(val clickListener: (recipe: Recipe) -> Unit){
         fun onClick(recipe: Recipe) = clickListener(recipe)
     }
+
 }
