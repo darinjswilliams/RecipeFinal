@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.android.recipe.adapter.RecipeAdapter
 import com.example.android.recipe.data.model.local.RecipeStore
 import com.example.android.recipe.databinding.ActivityMainBinding
+import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,10 @@ class MainActivity : AppCompatActivity() {
         val store = RecipeStore(this, "recipes")
 
         //adapters
-        binding.recipes.adapter = RecipeAdapter(store)
+        binding.recipes.adapter = RecipeAdapter(store, RecipeAdapter.OnClickListener {
+            Timber.i("Click on Recipe $it")
+        })
+
         binding.recipes.setHasFixedSize(true)
 
         //refresh the ui with the data

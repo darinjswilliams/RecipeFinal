@@ -24,6 +24,7 @@ class RecipeAdapter(private val store: RecipeStore, private val onClickListener:
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = store.recipes[position]
         holder.itemView.setOnClickListener{
+            onClickListener.onClick(recipe)
             val context = holder.itemView.context
             val intent = Intent(context, RecipeActivity::class.java)
             intent.putExtra(KEY_ID, recipe.id)

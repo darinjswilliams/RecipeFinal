@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Recipe</string>
     <string name="empty">No Recipes</string>
-    <string name="recipeId">10</string>
+    <string name="recipeId">ID</string>
+    <string name="recipe_not_found">Recipe Not Found</string>
+    <string name="recipeDescription">Description</string>
+    <string name="title">Title</string>
 </resources>
