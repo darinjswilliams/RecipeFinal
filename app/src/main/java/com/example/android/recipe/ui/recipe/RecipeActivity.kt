@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.android.recipe.R
 import com.example.android.recipe.data.model.local.RecipeStore
-import com.example.android.recipe.data.model.local.SharedPreferencesFavorites
 import com.example.android.recipe.databinding.ActivityRecipeBinding
+import com.example.android.recipe.injection.RecipeApp
 import timber.log.Timber
 
 class RecipeActivity : AppCompatActivity() {
@@ -36,7 +36,8 @@ class RecipeActivity : AppCompatActivity() {
             return
         }
 
-        val favorites = SharedPreferencesFavorites(this)
+        val app = RecipeApp()
+        val favorites =  app.getFavorites()
 
         val favorite = recipe.let{ favorites.get(id) }
 

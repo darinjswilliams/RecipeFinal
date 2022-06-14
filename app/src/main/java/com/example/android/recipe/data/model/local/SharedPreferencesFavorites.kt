@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import timber.log.Timber
 
-class SharedPreferencesFavorites(var context: Context) {
+class SharedPreferencesFavorites(var context: Context): Favorites{
     private val pref: SharedPreferences =
         context.getSharedPreferences("favorites.xml", Context.MODE_PRIVATE)
 
-    fun get(id: String): Boolean {
+    override fun get(id: String): Boolean {
         Timber.d("fun get: id : ${id}")
         return  pref.getBoolean(id, false)
     }
@@ -26,7 +26,7 @@ class SharedPreferencesFavorites(var context: Context) {
         editor.apply()
     }
 
-    fun toggle(id: String): Boolean{
+    override fun toggle(id: String): Boolean{
        val favorite = get(id)
 
         Timber.d("before calling put $favorite")
