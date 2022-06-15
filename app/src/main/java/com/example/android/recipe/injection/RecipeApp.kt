@@ -6,24 +6,27 @@ import com.example.android.recipe.data.model.local.SharedPreferencesFavorites
 import com.facebook.stetho.Stetho
 import timber.log.Timber
 
-class RecipeApp : Application() {
+open class RecipeApp : Application() {
 
 
-    val favorites: Favorites by lazy { SharedPreferencesFavorites(this) }
+    private lateinit var favorites: Favorites
+
 
     override fun onCreate() {
         super.onCreate()
+
 
         //Timber
         Timber.plant(Timber.DebugTree())
 
         //Stetho
         Stetho.initializeWithDefaults(this@RecipeApp)
+
+        favorites = SharedPreferencesFavorites(this@RecipeApp)
     }
 
-    fun getFavorites(): Favorites {
 
-        favorites = SharedPreferencesFavorites(this)
+    open fun getFavorites(): Favorites {
 
         return favorites
     }

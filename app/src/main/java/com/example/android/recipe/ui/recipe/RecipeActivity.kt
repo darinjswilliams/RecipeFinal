@@ -14,6 +14,8 @@ class RecipeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeBinding
 
+    private val app by lazy { application }
+
     companion object {
         const val KEY_ID = "id"
     }
@@ -36,19 +38,20 @@ class RecipeActivity : AppCompatActivity() {
             return
         }
 
-        val app = RecipeApp()
-        val favorites =  app.getFavorites()
+        val favorites = (application as? RecipeApp)?.getFavorites()
 
-        val favorite = recipe.let{ favorites.get(id) }
+        val favorite = recipe.let{ favorites?.get(id) }
 
         recipe.apply {
 
             binding.title.text = title
-            binding.title.isSelected = favorite
+            if (favorite != null) {
+                binding.title.isSelected = favorite
+            }
 
             binding.title.setOnClickListener {
-                val result = favorites.toggle(recipe.id!!)
-                binding.title.isSelected = result
+
+                binding.title.isSelected =  favorites?.toggle(recipe.id!!) == true
             }
 
             binding.description.text = recipe.description
