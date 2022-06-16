@@ -16,4 +16,8 @@ class InMemoryFavorites : Favorites {
     fun put(id: String, value: Boolean) {
         map[id] = value
     }
+
+    fun clear() {
+        map.clear()
+    }
 }

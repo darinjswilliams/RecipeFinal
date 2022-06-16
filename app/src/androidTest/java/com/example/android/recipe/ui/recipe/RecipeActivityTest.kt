@@ -9,9 +9,13 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.android.recipe.R
+import com.example.android.recipe.data.model.local.InMemoryFavorites
+import com.example.android.recipe.injection.RecipeAppTest
 import org.hamcrest.Matchers.not
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,6 +25,11 @@ class RecipeActivityTest {
     //helper fields
     //mock helper class
 
+    companion object{
+
+        private const val CARROT_ID = "creamed_carrots"
+    }
+
     /**
      * Use [ActivityScenarioRule] to create and launch the activity under test before each test,
      * and close it after each test. This is a replacement for
@@ -29,6 +38,15 @@ class RecipeActivityTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(RecipeActivity::class.java)
 
+    private lateinit var favorites: InMemoryFavorites
+
+    @Before
+    fun clearFavorites(){
+       val app  =  InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+        favorites  = (app as? RecipeAppTest)?.getFavorites() as InMemoryFavorites
+
+        favorites.clear()
+    }
 
     @After
     fun cleanUp() {
@@ -42,7 +60,7 @@ class RecipeActivityTest {
         launchActivity<RecipeActivity>(null)
 
         onView(withId(R.id.description))
-            .check(matches(withText(R.string.recipe_not_found)))
+            .check(matches(not(withText(R.string.recipe_not_found))))
 
         onView(withId(R.id.title))
             .check(matches(not(isDisplayed())))
@@ -61,6 +79,23 @@ class RecipeActivityTest {
             .perform(click())
             .check(matches(isSelected()))
 
+    }
+
+    @Test fun alreadyFavorite(){
+
+        favorites.put(CARROT_ID, true)
+
+        launchRecipe(CARROT_ID)
+        onView(withId(R.id.title))
+            .check(matches(isSelected()))
+
+    }
+
+    private fun launchRecipe(id: String) {
+        val intent = Intent(ApplicationProvider.getApplicationContext(), RecipeActivity::class.java)
+            .putExtra(RecipeActivity.KEY_ID, id)
+
+        launchActivity<RecipeActivity>(intent)
     }
 
 
