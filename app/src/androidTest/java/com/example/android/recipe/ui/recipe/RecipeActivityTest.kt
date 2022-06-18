@@ -13,6 +13,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.android.recipe.R
 import com.example.android.recipe.data.model.local.InMemoryFavorites
 import com.example.android.recipe.injection.RecipeAppTest
+import com.example.android.recipe.test.RecipeRobot
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -57,13 +58,10 @@ class RecipeActivityTest {
     @Test
     fun recipeNotFound() {
 
-        launchActivity<RecipeActivity>(null)
-
-        onView(withId(R.id.description))
-            .check(matches(not(withText(R.string.recipe_not_found))))
-
-        onView(withId(R.id.title))
-            .check(matches(not(isDisplayed())))
+        RecipeRobot()
+            .launch(activityRule)
+            .noTitle()
+            .description(R.string.recipe_not_found)
     }
 
     @Test
