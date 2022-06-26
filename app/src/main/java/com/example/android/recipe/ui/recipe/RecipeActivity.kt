@@ -23,21 +23,27 @@ class RecipeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //step 1. setup the ui
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe)
 
+        //setp 2 load recipe from store
         val store = RecipeStore(this, "recipes")
 
         val id = intent.getStringExtra(KEY_ID)
 
-        val recipe = id?.let { store.getRecipe(it) }
-        Timber.i("Here is the Recipe $recipe")
+        val presenter = RecipePresenter(store, binding)
+        id?.let{ presenter.loadRecipe(id) }
 
-        if (recipe == null) {
-            binding.title.visibility = View.GONE
-            binding.description.text = R.string.recipe_not_found.toString()
-            return
-        }
+//        val recipe = id?.let { store.getRecipe(it) }
+//        Timber.i("Here is the Recipe $recipe")
 
+        //step 3, if recipe is null show error
+//        if (recipe == null) {
+//
+//            return
+//        }
+
+        //step 4 if recipe is not null show recipe
         val favorites = (application as? RecipeApp)?.getFavorites()
 
         val favorite = recipe.let{ favorites?.get(id) }
@@ -49,6 +55,7 @@ class RecipeActivity : AppCompatActivity() {
                 binding.title.isSelected = favorite
             }
 
+            //step 5 when title is clidk toggle favorites
             binding.title.setOnClickListener {
 
                 binding.title.isSelected =  favorites?.toggle(recipe.id!!) == true

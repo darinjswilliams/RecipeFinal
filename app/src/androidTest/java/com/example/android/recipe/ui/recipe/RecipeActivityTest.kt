@@ -26,7 +26,7 @@ class RecipeActivityTest {
     //helper fields
     //mock helper class
 
-    companion object{
+    companion object {
 
         private const val CARROT_ID = "creamed_carrots"
     }
@@ -38,16 +38,6 @@ class RecipeActivityTest {
      */
     @get:Rule
     val activityRule = ActivityScenarioRule(RecipeActivity::class.java)
-
-    private lateinit var favorites: InMemoryFavorites
-
-    @Before
-    fun clearFavorites(){
-       val app  =  InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
-        favorites  = (app as? RecipeAppTest)?.getFavorites() as InMemoryFavorites
-
-        favorites.clear()
-    }
 
     @After
     fun cleanUp() {
@@ -79,11 +69,14 @@ class RecipeActivityTest {
 
     }
 
-    @Test fun alreadyFavorite(){
+    @Test
+    fun alreadyFavorite() {
 
-        favorites.put(CARROT_ID, true)
+        RecipeRobot()
+            .setFavorites(CARROT_ID)
+            .launch(activityRule, CARROT_ID)
+            .isFavorite()
 
-        launchRecipe(CARROT_ID)
         onView(withId(R.id.title))
             .check(matches(isSelected()))
 
