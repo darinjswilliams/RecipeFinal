@@ -8,9 +8,8 @@ import com.example.android.recipe.R
 import com.example.android.recipe.data.model.local.RecipeStore
 import com.example.android.recipe.databinding.ActivityRecipeBinding
 import com.example.android.recipe.injection.RecipeApp
-import timber.log.Timber
 
-class RecipeActivity : AppCompatActivity() {
+class RecipeActivity : AppCompatActivity(), RecipeContract.View {
 
     private lateinit var binding: ActivityRecipeBinding
 
@@ -31,38 +30,37 @@ class RecipeActivity : AppCompatActivity() {
 
         val id = intent.getStringExtra(KEY_ID)
 
-        val presenter = RecipePresenter(store, binding)
-        id?.let{ presenter.loadRecipe(id) }
-
-//        val recipe = id?.let { store.getRecipe(it) }
-//        Timber.i("Here is the Recipe $recipe")
-
-        //step 3, if recipe is null show error
-//        if (recipe == null) {
-//
-//            return
-//        }
-
-        //step 4 if recipe is not null show recipe
+        //step 4 if recipe is not null show recipe, this is done in presenter
         val favorites = (application as? RecipeApp)?.getFavorites()
 
-        val favorite = recipe.let{ favorites?.get(id) }
+        val presenter = RecipePresenter(store, this, favorites)
+        id?.let { presenter.loadRecipe(it) }
 
-        recipe.apply {
 
-            binding.title.text = title
-            if (favorite != null) {
-                binding.title.isSelected = favorite
-            }
-
-            //step 5 when title is clidk toggle favorites
-            binding.title.setOnClickListener {
-
-                binding.title.isSelected =  favorites?.toggle(recipe.id!!) == true
-            }
-
-            binding.description.text = recipe.description
+        //step 5 when title is clidk toggle favorites
+        binding.title.setOnClickListener {
+            presenter.toggleFavorite()
         }
 
+    }
+
+    override fun showRecipeNotFoundError() {
+        binding.title.visibility = View.GONE
+        binding.description.text = R.string.recipe_not_found.toString()
+    }
+
+    override fun setTitle(title: String?) {
+
+        title?.let { binding.title.text = it }
+
+    }
+
+
+    override fun setDescription(description: String?) {
+        description?.let { binding.description.text = it }
+    }
+
+    override fun setFavorite(favorite: Boolean?) {
+        favorite?.let { binding.title.isSelected = it }
     }
 }
