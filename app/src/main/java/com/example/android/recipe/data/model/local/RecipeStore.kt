@@ -8,7 +8,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.InputStream
 
-class RecipeStore(val context: Context, val directory: String) {
+open class RecipeStore(val context: Context, val directory: String) {
 
 
     val recipes = arrayListOf<Recipe>()

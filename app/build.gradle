@@ -68,11 +68,12 @@ dependencies {
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
     testImplementation "androidx.test:rules:$androidXTestRulesVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
 
     //Parser
     implementation "com.google.code.gson:gson:$gsonVerson"
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
 
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
