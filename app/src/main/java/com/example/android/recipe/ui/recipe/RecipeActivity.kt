@@ -13,7 +13,7 @@ class RecipeActivity : AppCompatActivity(), RecipeContract.View {
 
     private lateinit var binding: ActivityRecipeBinding
 
-    private val app by lazy { application }
+//    private val app by lazy { application }
 
     companion object {
         const val KEY_ID = "id"
@@ -60,7 +60,7 @@ class RecipeActivity : AppCompatActivity(), RecipeContract.View {
         description?.let { binding.description.text = it }
     }
 
-    override fun setFavorite(favorite: Boolean.Companion) {
-        favorite?.let { binding.title.isSelected = it }
+    override fun setFavorite(favorite: Boolean) {
+        favorite?.let { binding.title.isSelected = it     }
     }
 }

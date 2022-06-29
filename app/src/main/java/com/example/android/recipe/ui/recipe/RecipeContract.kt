@@ -5,7 +5,7 @@ interface RecipeContract {
         fun showRecipeNotFoundError()
         fun setTitle(title: String?)
         fun setDescription(description: String?)
-        fun setFavorite(favorite: Boolean.Companion)
+        fun setFavorite(favorite: Boolean)
     }
 
     interface Listener {
