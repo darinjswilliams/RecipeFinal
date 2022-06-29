@@ -60,7 +60,7 @@ class RecipeActivity : AppCompatActivity(), RecipeContract.View {
         description?.let { binding.description.text = it }
     }
 
-    override fun setFavorite(favorite: Boolean?) {
+    override fun setFavorite(favorite: Boolean.Companion) {
         favorite?.let { binding.title.isSelected = it }
     }
 }

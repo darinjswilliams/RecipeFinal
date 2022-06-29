@@ -1,11 +1,8 @@
 package com.example.android.recipe.ui.recipe
 
-import android.view.View
-import com.example.android.recipe.R
 import com.example.android.recipe.data.model.Recipe
 import com.example.android.recipe.data.model.local.Favorites
 import com.example.android.recipe.data.model.local.RecipeStore
-import com.example.android.recipe.databinding.ActivityRecipeBinding
 
 class RecipePresenter(val store: RecipeStore, val view: RecipeContract.View, val favorites: Favorites?):RecipeContract.Listener {
 
@@ -25,6 +22,9 @@ class RecipePresenter(val store: RecipeStore, val view: RecipeContract.View, val
     }
 
     fun toggleFavorite() {
+        if(recipe == null) {
+            throw  IllegalStateException()
+        }
         view.setFavorite( favorites?.toggle(recipe.id!!) == true )
     }
 }
